@@ -1,0 +1,5 @@
+use makefile
+
+$ make run
+
+
