@@ -1,12 +1,12 @@
 clean:
-  rm ./a.out
+	rm ./a.out
 
 compile:
-  gcc main.c
+	gcc fsLowDriver.c
   
 run:
-  make clean
-  make compile
-  ./a.out
+	make clean
+	make compile
+	./a.out
 
 
