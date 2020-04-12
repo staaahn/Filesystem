@@ -1,12 +1,13 @@
 clean:
 	rm ./a.out
 
-compile:
+lowDriver:
 	gcc fsLowDriver.c
-  
-run:
-	make clean
-	make compile
+
+ourDriver:
+	gcc fsdriver3.c
+
+runLow:
 	./a.out
 
 
