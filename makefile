@@ -8,7 +8,7 @@ ourDriver:
 	gcc fsdriver3.c fsLow.c -o main -lm
 
 runLow:
-	./main output.txt 1000 10
+	./main output 1000 10
 
 run:
 	./main
