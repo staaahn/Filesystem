@@ -11,6 +11,7 @@ runLow:
 	./main output 1048576 512
 
 run:
-	./main
+	make ourDriver
+	./main output 1048576 512
 
 
