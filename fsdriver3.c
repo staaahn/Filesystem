@@ -40,79 +40,38 @@ int main (int argc, char *argv[]) {
     }
 
     /* MENU */
-    char opt[8] = "foo"; // 8 letter word
-    char line[255]; // 255 letter word
+    char* opt = malloc(sizeof(char) * 8); // 8 letter word
+    char* line = malloc(sizeof(char) * 255); // 255 letter word
+    char** arguments;
     int arg_count = 0;
     while(strcmp(opt, "exit") != 0) {
+        printf("NOTE: type \"exit\" to exit this prompt\n"); // prompt
         printf("$ "); // prompt
         scanf("%s", line);
-        // tokenize()
-        // opt = args[0];
-        if(strcmp(opt, "ls") {
+        tokenize(line, arguments, arg_count);
+        opt = arguments[0];
+        if(strcmp(opt, "ls") == 0) {
             listDir(arguments, arg_count);
-        } else if(strcmp(opt, "mkdir") {
+        } else if(strcmp(opt, "mkdir") == 0) {
             createDir(arguments, arg_count);
-        } else if(strcmp(opt, "touch") {
+        } else if(strcmp(opt, "touch") == 0) {
             createFile(arguments, arg_count);
-        } else if(strcmp(opt, "rm") {
+        } else if(strcmp(opt, "rm") == 0) {
             removeFile(arguments, arg_count);
-        } else if(strcmp(opt, "cp") {
+        } else if(strcmp(opt, "cp") == 0) {
             copyFile(arguments, arg_count);
-        } else if(strcmp(opt, "mv") {
+        } else if(strcmp(opt, "mv") == 0) {
             moveFile(arguments, arg_count);
-        } else if(strcmp(opt, "set") {
+        } else if(strcmp(opt, "set") == 0) {
             setMetaData(arguments, arg_count);
-        } else if() {
+        } else if(strcmp(opt, "special1") == 0) {
             special1(arguments, arg_count);
-        } else if() {
+        } else if(strcmp(opt, "special2") == 0) {
             special2(arguments, arg_count);
         }
     }
 
     /* Close Partition */
     closePartitionSystem();
-    return 0;
+    return EXIT_SUCCESS;
 }
-
-// // Driver File
-
-// createFile() {
-//   LBA_write( stuff) 
-// }
-
-// readFile() {
-//  LBA_read 
-// }
-
-// listDir() {
-//   LBA_read()
-// }
-
-// createDir() {
-//   LBA_write()
-// }
-
-// #include "CreateFile.h"
-// #include "ListDir.h"
-// #include "CreateDir.h"
-
-
-// main () {
-//   startpartition (stuff) // beer
-//   while(true) {
-//     //menu
-//     1. create a dir
-//       createDir(dir name);
-//     2. list dir
-//       listDir();
-//     3. create a file
-//     4. rm a file
-//             enter the filename
-//             removed file (filename)
-//     10. enter q to quit
-//   }
-    
-//   closepartition (stuff) // beer
-// }
-
-
