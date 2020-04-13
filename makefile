@@ -1,13 +1,16 @@
 clean:
-	rm ./a.out
+	rm main
 
 lowDriver:
-	gcc fsLowDriver.c
+	gcc fsLowDriver.c fsLow.c -o main -lm
 
 ourDriver:
-	gcc fsdriver3.c
+	gcc fsdriver3.c fsLow.c -o main -lm
 
 runLow:
-	./a.out
+	./main output.txt 1000 10
+
+run:
+	./main
 
 
