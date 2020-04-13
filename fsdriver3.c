@@ -7,86 +7,93 @@
 #include "fsLow.h" /* (startPartitionSystem) (closePartitionSystem) (LBAwrite) (LBAread) */
 #include "tokenize.c" /* (tokenize) (print) */
 
-#define LINE_LENGTH 256 // CHAR
-#define MAX_ARGS 8
-#define ARG_LENGTH 32 // CHAR
-
-// struct arguments {
-//     char arguments[MAX_ARGS][ARG_LENGTH];
-//     char* opt;
-//     int arg_count;
-// };
-
-int main (int argc, char *argv[]) {
+struct filesystem_volume{
     char* filename;
-	uint64_t volumeSize;
+    uint64_t volumeSize;
 	uint64_t blockSize;
     int retVal;
-    
+};
+
+int main (int main_argc, char *main_argv[]) {
+    struct filesystem_volume volume;
 
     /* Check for correct argc */
-	if (argc == 4){
-		filename     = argv[1];
-		volumeSize   = atoll (argv[2]); // must be greater than 500,000 and a power of 2
-		blockSize    = atoll (argv[3]); // must be greater than 512 and a power of 2
+	if (main_argc == 4){
+		volume.filename      = main_argv[1];
+		volume.volumeSize    = atoll (main_argv[2]); // must be greater than 500,000 and a power of 2
+		volume.blockSize     = atoll (main_argv[3]); // must be greater than 512 and a power of 2
 	} else {
         printf("Need 3 args (filename volumeSize blcokSize\n");
         return EXIT_FAILURE;
     }
 
     /* Create Partition */
-    printf("Opening %s, Volume Size: %llu;  BlockSize: %llu\n", filename, (ull_t)volumeSize, (ull_t)blockSize);
-    retVal = startPartitionSystem (filename, &volumeSize, &blockSize);	
-	printf("Opened  %s, Volume Size: %llu;  BlockSize: %llu; Return %d\n", filename, (ull_t)volumeSize, (ull_t)blockSize, retVal);
-    if(retVal == 0) {
-        printf("\tresult: success\n");
-    } else if(retVal == -1) {
-        printf("\tresult: file exists but can not open for write\n");
+    printf("Opening %s, Volume Size: %llu;  BlockSize: %llu\n", volume.filename, (ull_t)volume.volumeSize, (ull_t)volume.blockSize);
+    volume.retVal = startPartitionSystem (volume.filename, &volume.volumeSize, &volume.blockSize);	
+	printf("Opened  %s, Volume Size: %llu;  BlockSize: %llu; Return %d\n", volume.filename, (ull_t)volume.volumeSize, (ull_t)volume.blockSize, volume.retVal);
+    if(volume.retVal == 0) {
+        printf("\t- RESULT: success\n");
+    } else if(volume.retVal == -1) {
+        printf("\t- RESULT: file exists but can not open for write\n");
         // return EXIT_FAILURE;
-    } else if(retVal == -2) {
-        printf("\tresult: insufficient space for the volume\n");
+    } else if(volume.retVal == -2) {
+        printf("\t- RESULT: insufficient space for the volume\n");
         // return EXIT_FAILURE;
     } else {
-        printf("\tresult: %d\n", retVal);
+        printf("\t- RESULT: %d\n", volume.retVal);
         // return EXIT_FAILURE;
     }
 
     /* MENU */
-    char* opt = malloc(sizeof(char) * ARG_LENGTH);
     char line[LINE_LENGTH];
-    char arguments[MAX_ARGS][ARG_LENGTH];
-    int arg_count = 0;
+    struct arguments command;
+    int success = 1;
 
-    printf("\nNOTE: type \"exit\" to exit this prompt\n"); // prompt
-    // while(strcmp(opt, "exit") != 0) {
+    printf("\nNOTE: type \"exit\" to exit this prompt\n");
+    printf("NOTE: type \"help\" to show commands\n\n");
+    do {
         printf("$ "); // prompt
         fgets(line, LINE_LENGTH, stdin);
-        tokenize(line, &arguments, &arg_count);
-        print(arguments, arg_count);
-        opt = arguments[0];
-        // if(strcmp(opt, "ls") == 0) {
-        //     listDir(arguments, arg_count);
-        // } else if(strcmp(opt, "mkdir") == 0) {
-        //     createDir(arguments, arg_count);
-        // } else if(strcmp(opt, "touch") == 0) {
-        //     createFile(arguments, arg_count);
-        // } else if(strcmp(opt, "rm") == 0) {
-        //     removeFile(arguments, arg_count);
-        // } else if(strcmp(opt, "cp") == 0) {
-        //     copyFile(arguments, arg_count);
-        // } else if(strcmp(opt, "mv") == 0) {
-        //     moveFile(arguments, arg_count);
-        // } else if(strcmp(opt, "set") == 0) {
-        //     setMetaData(arguments, arg_count);
-        // } else if(strcmp(opt, "special1") == 0) {
-        //     special1(arguments, arg_count);
-        // } else if(strcmp(opt, "special2") == 0) {
-        //     special2(arguments, arg_count);
-        // }
-    // }
-    // free(opt);
+        tokenize(line, &command);
+        if(command.argc == 0) continue; 
+        if(strcmp(command.opt, "ld") == 0) {
+            // success = listDir(volume, command);
+        } else if(strcmp(command.opt, "mkdir") == 0) {
+            // success = createDir(volume, command);
+        } else if(strcmp(command.opt, "touch") == 0) {
+            // success = createFile(volume, command);
+        } else if(strcmp(command.opt, "rm") == 0) {
+            // success = removeFile(volume, command);
+        } else if(strcmp(command.opt, "cp") == 0) {
+            // success = copyFile(volume, command);
+        } else if(strcmp(command.opt, "mv") == 0) {
+            // success = moveFile(volume, command);
+        } else if(strcmp(command.opt, "set") == 0) {
+            // success = setMetaData(volume, command);
+        } else if(strcmp(command.opt, "special1") == 0) {
+            // success = special1(volume, command);
+        } else if(strcmp(command.opt, "special2") == 0) {
+            // success = special2(volume, command);
+        } else if(strcmp(command.opt, "help") == 0) {
+            printf("\tlist all directories = ld\n");
+            printf("\tmake a directory = mkdir\n");
+            printf("\tmake a file = touch\n");
+            printf("\tremove a file = rm\n");
+            printf("\tcopy a file = cp\n");
+            printf("\tmove a file = mv\n");
+            printf("\tset metadata = set\n");
+            printf("\tspecial command 1 = special1\n");
+            printf("\tspecial command 2 = special2\n");
+            printf("\texit prompt = exit\n");
+        } else if(strcmp(command.opt, "exit") != 0) {
+            printf("Invalid Command: %s\n", command.opt);
+        }
+        if(!success) {
+            printf("******ERROR: %s ******\n", command.opt);
+        }
+    } while(strcmp(command.opt, "exit") != 0);
 
     /* Close Partition */
-    // closePartitionSystem();
+    closePartitionSystem();
     return EXIT_SUCCESS;
 }

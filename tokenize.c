@@ -1,26 +1,33 @@
 #define LINE_LENGTH 256 // CHAR
 #define MAX_ARGS 8
 #define ARG_LENGTH 32 // CHAR
-#define DELIMITERS " "
+#define DELIMITERS " \t\n"
 
-void print(char args[MAX_ARGS][ARG_LENGTH], int argc) {
-    for(int i = 0; i < argc; i++) {
-        printf("%d : %s\n", i, args[i]);
+struct arguments {
+    char args[MAX_ARGS][ARG_LENGTH];
+    char* opt;
+    int argc;
+};
+
+/* print(command); */
+void print(struct arguments command) {
+    for(int i = 0; i < command.argc; i++) {
+        printf("%d : %s\n", i, command.args[i]);
     }
 }
 
-void tokenize(char line[LINE_LENGTH], char args[MAX_ARGS][ARG_LENGTH], int* argc) {
+/* tokenize(line, &command); */
+void tokenize(char line[LINE_LENGTH], struct arguments *command) {
     char* token;
     char* rest = line;
-    *argc = 0;
+    command->argc = 0;
     while ((token = strtok_r(rest, DELIMITERS, &rest))) {
-        if(*argc > MAX_ARGS) {
+        if(command->argc > MAX_ARGS) {
             printf("****** TO MANY ARGS ******\n");
             break;
         }
-        strcpy(args[*argc], token);
-        *argc += 1;
+        strcpy(command->args[command->argc], token);
+        command->argc += 1;
     }
+    command->opt = command->args[0];
 }
-
-
