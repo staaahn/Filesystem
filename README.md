@@ -1,11 +1,12 @@
-# Bierman file (fsLowDriver.c) (dummy command line arguments):
+## Bierman file (fsLowDriver.c):
 ### $ make clean
-### $ make lowDriver
 ### $ make runLow
 
-# Our File (fsdriver3.c) (still needs work, probably command line arguments):
+## Our File (fsdriver3.c):
 ### $ make clean
-### $ make ourDriver
-### $ make run 
+### $ make run
 
-# hexdump (hexdump.c) (needs to be done):
+## hexdump (hexdump.c):
+### First (make runLow) || (make run)
+### $ make cleanHex
+### $ make runHexDump
