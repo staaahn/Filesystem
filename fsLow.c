@@ -85,10 +85,10 @@ int startPartitionSystem (char * filename, uint64_t * volSize, uint64_t * blockS
 	int fd;
 	int retVal = PART_NOERROR;
 	int accessRet = access(filename, F_OK);
-	printf ("File %s does %sexist, errno = %d\n", filename, accessRet==-1?"not ":"",errno);
+	printf ("\t- File %s does %sexist, errno = %d\n", filename, accessRet==-1?"not ":"",errno);
 	
 	accessRet = access(filename, R_OK | W_OK);
-	printf ("File %s %sgood to go, errno = %d\n", filename, accessRet==-1?"not ":"",errno);
+	printf ("\t- File %s %sgood to go, errno = %d\n", filename, accessRet==-1?"not ":"",errno);
 	
 	//Some issue - 
 	if (accessRet == -1)
