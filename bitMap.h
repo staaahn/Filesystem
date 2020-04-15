@@ -1,6 +1,6 @@
 #define WORDSIZE 32
 
-typedef struct NNODE_BitMap {
+typedef struct NNODEBitMap {
 	uint32_t  bitsize;
 	uint32_t  wordsize;
 
