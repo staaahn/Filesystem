@@ -24,6 +24,7 @@ void Init() {
 	memset(&tempBlock, 0, SECTOR_SIZE);
 	memcpy(&tempBlock, &PermanentSuperBlock, sizeof(struct SuperBlock));
 
+    // Was thinking we could use the function LBAwrite? WriteToFile was used as a placeholder function call of writing to file //
     if (WriteToFile((BYTE*) &tempBlock, SUPER_BLOCK_SECTOR) == FALSE)
 		exit(-1);
 
@@ -44,6 +45,7 @@ void Init() {
 
 	memcpy(((&tempBlock[used])), dataBitMap->dataarray, DATA_BITMAP_SIZE * sizeof(uint32_t)); // Copy over the dynamic data
 
+    // Was thinking we could use the function LBAwrite? WriteToFile was used as a placeholder function call of writing to file //
     if (WriteToFile((BYTE*) &tempBlock, DATA_BITMAP_SECTOR) == FALSE)
 		exit(-1);
 
@@ -51,6 +53,7 @@ void Init() {
     used = sizeof(BitMap) - sizeof(uint32_t*);
     memccpy(((&tempBlock[used])), inodeBitMap->dataarray, INODE_BITMAP_SIZE * sizeof(uint32_t)); // Copies dynamic data
 
+    // Was thinking we could use the function LBAwrite? WriteToFile was used as a placeholder function call of writing to file //
     if (_WriteToFile((BYTE*) &tempBlock, INODE_BITMAP_SECTOR) == FALSE)
         exit(-1);
 
@@ -68,7 +71,7 @@ void Init() {
 			memcpy(&tempBlock[j * sizeof(INODE)], &CurrentNode, sizeof(INODE));
 			memset(&CurrentNode, 0, sizeof(INODE));
 		}
-
+        // Was thinking we could use the function LBAwrite? WriteToFile was used as a placeholder function call of writing to file //
 		if (WriteToFile((BYTE*) &tempBlock, INODE_BLOCK_START + i) == FALSE)	// Write to the proper inode sector location
 			exit(-1);
 	}
