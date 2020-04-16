@@ -1,3 +1,5 @@
+// #include "structs.c" /* (filesystem_volume) (arguments) */
+
 #define LINE_LENGTH 256 // CHAR
 #define MAX_ARGS 8
 #define ARG_LENGTH 32 // CHAR

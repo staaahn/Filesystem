@@ -6,11 +6,14 @@
 
 #include "fsLow.h" /* (startPartitionSystem) (closePartitionSystem) (LBAwrite) (LBAread) */
 #include "tokenize.c" /* (tokenize) (print) */
+// #include "functions/createFile.c"
 
 struct filesystem_volume{
     char* filename;
     uint64_t volumeSize;
 	uint64_t blockSize;
+    uint64_t blockCount;
+    int* map;
     int retVal;
 };
 
@@ -22,6 +25,13 @@ int main (int main_argc, char *main_argv[]) {
 		volume.filename      = main_argv[1];
 		volume.volumeSize    = atoll (main_argv[2]); // must be greater than 500,000 and a power of 2
 		volume.blockSize     = atoll (main_argv[3]); // must be greater than 512 and a power of 2
+        volume.blockCount    = (volume.volumeSize / volume.blockSize); // number of LBAs
+        
+        /* Initialize the map to 0 (empty) */
+        volume.map           = malloc(sizeof(int) * volume.blockCount);
+        for(int i = 0; i < volume.blockCount; i++) {
+            volume.map[i] = 0;
+        }
 	} else {
         printf("Need 3 args (filename volumeSize blcokSize\n");
         return EXIT_FAILURE;
@@ -94,6 +104,8 @@ int main (int main_argc, char *main_argv[]) {
     } while(strcmp(command.opt, "exit") != 0);
 
     /* Close Partition */
+    printf("Closing Partition\n");
     closePartitionSystem();
+    printf("Closed  Partition\n");
     return EXIT_SUCCESS;
 }
