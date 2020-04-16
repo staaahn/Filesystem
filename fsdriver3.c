@@ -7,6 +7,13 @@
 #include "structs.h"
 #include "./low/fsLow.h" /* (startPartitionSystem) (closePartitionSystem) (LBAwrite) (LBAread) */
 #include "./tokenize/tokenize.h" /* (tokenize) (print) */
+
+#include "./functions/cp/copyFile.h" /* (copyFile) */
+#include "./functions/ld/listDir.h" /* (listDir) */
+#include "./functions/mkdir/createDir.h" /* (createDir) */
+#include "./functions/mv/moveFile.h" /* (moveFile) */
+#include "./functions/rm/removeFile.h" /* (removeFile) */
+#include "./functions/set/setMetaData.h" /* (setMetaData) */
 #include "./functions/touch/createFile.h" /* (createFile) */
 
 int main (int main_argc, char *main_argv[]) {
@@ -59,19 +66,19 @@ int main (int main_argc, char *main_argv[]) {
         tokenize(line, &command);
         if(command.argc == 0) continue; 
         if(strcmp(command.opt, "ld") == 0) {
-            // success = listDir(volume, command);
+            success = listDir(volume, command);
         } else if(strcmp(command.opt, "mkdir") == 0) {
-            // success = createDir(volume, command);
+            success = createDir(volume, command);
         } else if(strcmp(command.opt, "touch") == 0) {
             success = createFile(volume, command);
         } else if(strcmp(command.opt, "rm") == 0) {
-            // success = removeFile(volume, command);
+            success = removeFile(volume, command);
         } else if(strcmp(command.opt, "cp") == 0) {
-            // success = copyFile(volume, command);
+            success = copyFile(volume, command);
         } else if(strcmp(command.opt, "mv") == 0) {
-            // success = moveFile(volume, command);
+            success = moveFile(volume, command);
         } else if(strcmp(command.opt, "set") == 0) {
-            // success = setMetaData(volume, command);
+            success = setMetaData(volume, command);
         } else if(strcmp(command.opt, "special1") == 0) {
             // success = special1(volume, command);
         } else if(strcmp(command.opt, "special2") == 0) {
