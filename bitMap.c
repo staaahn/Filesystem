@@ -1,5 +1,7 @@
 #include <stdlib.h>
 #include <stdint.h>
+#include <unistd.h>
+#include <stdbool.h>
 #include "bitMap.h"
 
 BitMap* bitMapInit(uint32_t SizeInWords) {
