@@ -10,10 +10,10 @@ cleanResults:
 	> hexdump_results.txt
 
 ourDriver:
-	gcc fsdriver3.c fsLow.c -o main -lm
+	gcc fsdriver3.c low/fsLow.c tokenize/tokenize.c -o main -lm
 
 lowDriver:
-	gcc fsLowDriver.c fsLow.c -o main -lm
+	gcc fsLowDriver.c low/fsLow.c -o main -lm
 
 hexdump:
 	gcc hexdump.c -o hex

@@ -4,8 +4,8 @@
 #include <string.h>
 #include <math.h>
 
-#include "fsLow.h" /* (startPartitionSystem) (closePartitionSystem) (LBAwrite) (LBAread) */
-#include "tokenize.c" /* (tokenize) (print) */
+#include "./low/fsLow.h" /* (startPartitionSystem) (closePartitionSystem) (LBAwrite) (LBAread) */
+#include "./tokenize/tokenize.h" /* (tokenize) (print) */
 // #include "functions/createFile.c"
 
 struct filesystem_volume{
