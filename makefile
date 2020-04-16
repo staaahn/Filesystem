@@ -10,7 +10,7 @@ cleanResults:
 	> hexdump_results.txt
 
 ourDriver:
-	gcc fsdriver3.c low/fsLow.c tokenize/tokenize.c -o main -lm
+	gcc fsdriver3.c low/fsLow.c tokenize/tokenize.c functions/touch/createFile.c -o main -lm
 
 lowDriver:
 	gcc fsLowDriver.c low/fsLow.c -o main -lm

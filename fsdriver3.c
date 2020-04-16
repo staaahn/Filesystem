@@ -4,18 +4,10 @@
 #include <string.h>
 #include <math.h>
 
+#include "structs.h"
 #include "./low/fsLow.h" /* (startPartitionSystem) (closePartitionSystem) (LBAwrite) (LBAread) */
 #include "./tokenize/tokenize.h" /* (tokenize) (print) */
-// #include "functions/createFile.c"
-
-struct filesystem_volume{
-    char* filename;
-    uint64_t volumeSize;
-	uint64_t blockSize;
-    uint64_t blockCount;
-    int* map;
-    int retVal;
-};
+#include "./functions/touch/createFile.h" /* (createFile) */
 
 int main (int main_argc, char *main_argv[]) {
     struct filesystem_volume volume;
@@ -71,7 +63,7 @@ int main (int main_argc, char *main_argv[]) {
         } else if(strcmp(command.opt, "mkdir") == 0) {
             // success = createDir(volume, command);
         } else if(strcmp(command.opt, "touch") == 0) {
-            // success = createFile(volume, command);
+            success = createFile(volume, command);
         } else if(strcmp(command.opt, "rm") == 0) {
             // success = removeFile(volume, command);
         } else if(strcmp(command.opt, "cp") == 0) {

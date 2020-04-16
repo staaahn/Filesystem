@@ -1,7 +1,7 @@
-// #include "../fsdriver3.c"
+#include "createFile.h"
 
 int createFile(struct filesystem_volume volume, struct arguments command) {
-    int filesize = atoll (command.args[1]); // size in LBAs
+    int filesize = atoll (command.args[2]); // size in LBAs
 
     /* Create a buffer for of 'f' */
     char* buffer = malloc(volume.blockSize);
