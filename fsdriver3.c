@@ -17,11 +17,26 @@
 #include "./functions/touch/createFile.h" /* (createFile) */
 
 int createRoot(struct filesystem_volume volume) {
+    uint64_t result;
+    int rootIndex = 0;
+    int metaIndex = 1;
+    /* Set first LBA as used */
+    volume.map[rootIndex] = 1; 
+
+    /* Set metadata LBA as used */
+    volume.map[metaIndex] = 1;
+
+    /* create buffer */
     char* buffer = malloc(volume.blockSize);
     initializeLBA(buffer, '-', volume.blockSize);
     if(addName("root", buffer) != 1) return 0; // check
     if(addType("folder", buffer) != 1) return 0; // check
-    uint64_t result = LBAwrite( buffer, 1, 0);
+    if(connectMetaData(metaIndex, buffer) != 1) return 0; // check
+
+    /* write to buffer */
+    result = LBAwrite( buffer, 1, 0);
+    // need to add check
+    printf("\n- Created Root Directory\n");
     return 1;
 }
 
@@ -46,7 +61,7 @@ int main (int main_argc, char *main_argv[]) {
     }
 
     /* Create Partition */
-    printf("Opening %s, Volume Size: %llu;  BlockSize: %llu\n", volume.filename, (ull_t)volume.volumeSize, (ull_t)volume.blockSize);
+    printf("\nOpening %s, Volume Size: %llu;  BlockSize: %llu\n", volume.filename, (ull_t)volume.volumeSize, (ull_t)volume.blockSize);
     volume.retVal = startPartitionSystem (volume.filename, &volume.volumeSize, &volume.blockSize);	
 	printf("Opened  %s, Volume Size: %llu;  BlockSize: %llu; Return %d\n", volume.filename, (ull_t)volume.volumeSize, (ull_t)volume.blockSize, volume.retVal);
     if(volume.retVal == 0) {
@@ -55,7 +70,6 @@ int main (int main_argc, char *main_argv[]) {
             printf("\t***FAILED TO CREATE ROOT***\n");
             return EXIT_FAILURE; /* Set root directory */
         }
-        volume.map[0] = 1; /* Set first LBA as used */
     } else if(volume.retVal == -1) {
         printf("\t- RESULT: file exists but can not open for write\n");
         // return EXIT_FAILURE;

@@ -67,17 +67,23 @@ int addType(char* type, char* buffer) {
 
 // 3
 int connectMetaData(int index, char* buffer) {
-    int lineStart = (16*2);
+    /* convert index int to string */
     char* str = malloc(16);
     sprintf(str, "%d", index);
     int len = strlen(str);
-    if(len > 16){ // check
+
+    /* make sure length is less than 17 chars long */
+    if(len > 16){ 
         printf("***Metadata index too large (is > than 16 digits)***\n");
         return 0;
     } 
+
+    /* write to buffer */
+    int lineStart = (16*2);
     for(int i = lineStart; i < (lineStart + len); i++) {
         buffer[i] = str[i - lineStart];
     }
+
     return 1;
 }
 
