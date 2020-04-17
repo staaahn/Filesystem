@@ -33,6 +33,7 @@ int createRoot(struct filesystem_volume volume) {
     if(addType("folder", buffer) != 1) return 0; // check
     if(connectMetaData(metaIndex, buffer) != 1) return 0; // check
     result = LBAwrite( buffer, 1, 0);
+    free(buffer);
     // need to add check
 
     /* create metadata block */
@@ -40,7 +41,9 @@ int createRoot(struct filesystem_volume volume) {
     initializeLBA(metaBuffer, '*', volume.blockSize);
     if(addName("root", metaBuffer) != 1) return 0; // check
     if(addType("metadata", metaBuffer) != 1) return 0; // check
-    LBAwrite(metaBuffer, 1, metaIndex);
+    result = LBAwrite(metaBuffer, 1, metaIndex);
+    free(metaBuffer);
+    // need to add check
 
     printf("\n- Created Root Directory\n");
     return 1;
@@ -137,6 +140,7 @@ int main (int main_argc, char *main_argv[]) {
     } while(strcmp(command.opt, "exit") != 0);
 
     /* Close Partition */
+    free(volume.map);
     printf("\nClosing Partition\n");
     closePartitionSystem();
     printf("Closed  Partition\n");

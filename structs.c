@@ -34,8 +34,14 @@ int getIndex(char* key, struct filesystem_volume volume) {
         for(int j = 0; j < 16; j++) {
             name[j] = buffer[j];
         }
-        if(strcmp(name, key) == 0) return i; 
+        if(strcmp(name, key) == 0) {
+            free(buffer);
+            free(name);
+            return i; 
+        }
     }
+    free(buffer);
+    free(name);
     return -1;
 }
 
@@ -75,6 +81,7 @@ int connectMetaData(int index, char* buffer) {
     /* make sure length is less than 17 chars long */
     if(len > 16){ 
         printf("***Metadata index too large (is > than 16 digits)***\n");
+        free(str);
         return 0;
     } 
 
@@ -112,6 +119,8 @@ int addChild(int child, int parent, struct filesystem_volume volume) {
 
     if(len > 16){ // check
         printf("***Child index too large (is > than 16 digits)***\n");
+        free(buffer);
+        free(str);
         return 0;
     } 
 
