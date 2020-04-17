@@ -60,6 +60,13 @@ int createDir(struct filesystem_volume volume, struct arguments command) {
     printf("  - Writing Buffer to LBA: %d\n", i);
     LBAwrite(buffer, 1, i);
 
+    /* create metadata block */
+    char* metaBuffer = malloc(volume.blockSize);
+    initializeLBA(metaBuffer, '*', volume.blockSize);
+    if(addName(name, metaBuffer) != 1) return 0; // check
+    if(addType("metadata", metaBuffer) != 1) return 0; // check
+    LBAwrite(metaBuffer, 1, j);
+
     /* update parent LBA with child LBA */
     printf("- Updating parent folder\n");
     if(addChild(i, parentIndex, volume) != 1) return 0;

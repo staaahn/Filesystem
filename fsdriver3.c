@@ -32,10 +32,16 @@ int createRoot(struct filesystem_volume volume) {
     if(addName("root", buffer) != 1) return 0; // check
     if(addType("folder", buffer) != 1) return 0; // check
     if(connectMetaData(metaIndex, buffer) != 1) return 0; // check
-
-    /* write to buffer */
     result = LBAwrite( buffer, 1, 0);
     // need to add check
+
+    /* create metadata block */
+    char* metaBuffer = malloc(volume.blockSize);
+    initializeLBA(metaBuffer, '*', volume.blockSize);
+    if(addName("root", metaBuffer) != 1) return 0; // check
+    if(addType("metadata", metaBuffer) != 1) return 0; // check
+    LBAwrite(metaBuffer, 1, metaIndex);
+
     printf("\n- Created Root Directory\n");
     return 1;
 }
