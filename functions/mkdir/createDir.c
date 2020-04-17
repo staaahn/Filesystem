@@ -62,7 +62,7 @@ int createDir(struct filesystem_volume volume, struct arguments command) {
 
     /* update parent LBA with child LBA */
     printf("- Updating parent folder\n");
-    if(addChild(i, parentIndex) != 1) return 0;
+    if(addChild(i, parentIndex, volume) != 1) return 0;
 
     printf("- COMPLETE\n");
     return 1;

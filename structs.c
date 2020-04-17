@@ -82,7 +82,41 @@ int connectMetaData(int index, char* buffer) {
 }
 
 // 4
-int addChild(int child, int parent) {
+int addChild(int child, int parent, struct filesystem_volume volume) {
+    /* read parent LBA  into buffer so we can alter */
+    char* buffer = malloc(volume.blockSize);
+    int retVal = LBAread(buffer, 1, parent);
+    // need to add check
+    
+    /* loop through available lines */
+    int lineStart = (16*3);
+    int i;
+    for(i = lineStart; i < volume.blockSize; i = i + 16) {
+        /* find an empty line to add child index */
+        if(buffer[i] == '-') { 
+            printf("  - addChild at index: %d\n", i);
+            break;
+        }
+    }
+
+    /* get str value of line */
+    char* str = malloc(16);
+    sprintf(str, "%d", child);
+    int len = strlen(str);
+
+    if(len > 16){ // check
+        printf("***Child index too large (is > than 16 digits)***\n");
+        return 0;
+    } 
+
+    /* add str to buffer */
+    for(int j = i; j < (i + len); j++) {
+        buffer[j] = str[j - i];
+    }
+
+    /* write updated buffer */
+    retVal = LBAwrite(buffer, 1, parent);
+
     return 1;
 }
 
