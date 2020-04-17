@@ -1,6 +1,8 @@
 #ifndef stucts_h
 #define stucts_h
 
+#include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 
 #define MAX_ARGS 8
@@ -20,5 +22,8 @@ struct arguments {
     char* opt;
     int argc;
 };
+
+/* Name can only be 16 characters long */
+int addName(char* name, char* buffer);
 
 #endif /* stucts_h */
