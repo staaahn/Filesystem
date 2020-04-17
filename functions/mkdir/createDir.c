@@ -3,7 +3,10 @@
 /* opt newDirName parentDirName */
 int createDir(struct filesystem_volume volume, struct arguments command) {
     /* Checking argc */
-    if(command.argc != 3) return 0; // check
+    if(command.argc != 3) {
+        printf("***Not Enough Args***\n");
+        return 0; // check
+    }
 
     /* Get args */
     char* name     = command.args[1];
@@ -17,10 +20,10 @@ int createDir(struct filesystem_volume volume, struct arguments command) {
     for(i = 0; i < volume.blockCount; i++) {
         if(volume.map[i] == 0) break;
     }
-    printf("- Empty LBA at: %d\n", i);
+    printf("  - Empty LBA at: %d\n", i);
 
     /* mark LBA as used */
-    printf("- Marking LBA as used\n");
+    printf("  - Marking LBA as used\n");
     volume.map[i] = 1;
 
     /* Find another LBA for that is empty for metadata */
@@ -29,10 +32,10 @@ int createDir(struct filesystem_volume volume, struct arguments command) {
     for(j = 0; j < volume.blockCount; j++) {
         if(volume.map[j] == 0) break;
     }
-    printf("- Empty LBA at: %d\n", j);
+    printf("  - Empty LBA at: %d\n", j);
 
     /* mark LBA as used */
-    printf("- Marking LBA as used\n");
+    printf("  - Marking LBA as used\n");
     volume.map[j] = 1;
 
     /* Get parent LBA position */
@@ -42,19 +45,19 @@ int createDir(struct filesystem_volume volume, struct arguments command) {
         printf("***PARENT FOLDER DNE***\n");
         return 0;
     }
-    printf("- Found parent folder\n");
+    printf("  - Found parent folder\n");
      
     /* Create Index LBA */
     printf("- Creating Buffer\n");
     char* buffer = malloc(volume.blockSize);
     initializeLBA(buffer, '-', volume.blockSize);
-    printf("- Adding Name: %s\n", name);
+    printf("  - Adding Name: %s\n", name);
     if(addName(name, buffer) != 1) return 0; // check
-    printf("- Adding Type: folder\n");
+    printf("  - Adding Type: folder\n");
     if(addType("folder", buffer) != 1) return 0; // check
-    printf("- Connecting Metadata LBA index\n");
-    if(connectMetaData(j, buffer, volume) != 1) return 0; // check
-    printf("- Writing Buffer to LBA: %d\n", i);
+    printf("  - Connecting Metadata LBA index\n");
+    if(connectMetaData(j, buffer) != 1) return 0; // check
+    printf("  - Writing Buffer to LBA: %d\n", i);
     LBAwrite(buffer, 1, i);
 
     /* update parent LBA with child LBA */

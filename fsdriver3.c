@@ -82,7 +82,7 @@ int main (int main_argc, char *main_argv[]) {
         if(strcmp(command.opt, "ld") == 0) {
             success = listDir(volume, command);
         } else if(strcmp(command.opt, "mkdir") == 0) {
-            // success = createDir(volume, command); /* opt newDirName parentDirName */
+            success = createDir(volume, command); /* opt newDirName parentDirName */
         } else if(strcmp(command.opt, "touch") == 0) {
             success = createFile(volume, command);
         } else if(strcmp(command.opt, "rm") == 0) {

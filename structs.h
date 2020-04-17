@@ -38,7 +38,7 @@ int addName(char* name, char* buffer);
 int addType(char* type, char* buffer);
 
 /* line 3 of LBA */
-int connectMetaData(int index, char* buffer, struct filesystem_volume volume);
+int connectMetaData(int index, char* buffer);
 
 /* line 4 to 32 of LBA */
 int addChild(int child, int parent);

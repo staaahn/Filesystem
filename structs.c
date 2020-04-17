@@ -1,3 +1,15 @@
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <unistd.h>
+#include <string.h>
+#include <pthread.h>
+#include <errno.h>
+#include <math.h>
+
 #include "./low/fsLow.h"
 #include "structs.h"
 
@@ -46,7 +58,7 @@ int addType(char* type, char* buffer) {
     if(len <= 16) {
         /* second line of block */
         for(int i=16; i < (16+strlen(type)); i++) {
-            buffer[i] = type[i];
+            buffer[i] = type[i-16];
         }
         return 1;
     }
@@ -54,9 +66,17 @@ int addType(char* type, char* buffer) {
 }
 
 // 3
-int connectMetaData(int index, char* buffer, struct filesystem_volume volume) {
-    for(int i = (16*3); i < volume.blockSize; i = i*16) {
-        printf("Line: %d\n", (i/16));
+int connectMetaData(int index, char* buffer) {
+    int lineStart = (16*2);
+    char* str = malloc(16);
+    sprintf(str, "%d", index);
+    int len = strlen(str);
+    if(len > 16){ // check
+        printf("***Metadata index too large (is > than 16 digits)***\n");
+        return 0;
+    } 
+    for(int i = lineStart; i < (lineStart + len); i++) {
+        buffer[i] = str[i - lineStart];
     }
     return 1;
 }
