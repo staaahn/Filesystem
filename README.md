@@ -1,3 +1,7 @@
+## Easiest
+### $ make bang!
+### $ make superclean! 
+
 ## Bierman file (fsLowDriver.c):
 ### $ make clean
 ### $ make runLow
