@@ -16,13 +16,13 @@
 #include "./functions/set/setMetaData.h" /* (setMetaData) */
 #include "./functions/touch/createFile.h" /* (createFile) */
 
-void createRoot(struct filesystem_volume volume) {
+int createRoot(struct filesystem_volume volume) {
     char* buffer = malloc(volume.blockSize);
-    for(int i = 0; i < volume.blockSize; i++) {
-        buffer[i] = '-';
-    }
-    addName("root", buffer);
+    initializeLBA(buffer, '-', volume.blockSize);
+    if(addName("root", buffer) != 1) return 0; // check
+    if(addType("folder", buffer) != 1) return 0; // check
     uint64_t result = LBAwrite( buffer, 1, 0);
+    return 1;
 }
 
 int main (int main_argc, char *main_argv[]) {
@@ -51,7 +51,10 @@ int main (int main_argc, char *main_argv[]) {
 	printf("Opened  %s, Volume Size: %llu;  BlockSize: %llu; Return %d\n", volume.filename, (ull_t)volume.volumeSize, (ull_t)volume.blockSize, volume.retVal);
     if(volume.retVal == 0) {
         printf("\t- RESULT: success\n");
-        createRoot(volume); /* Set root directory */
+        if(createRoot(volume) != 1) {
+            printf("\t***FAILED TO CREATE ROOT***\n");
+            return EXIT_FAILURE; /* Set root directory */
+        }
         volume.map[0] = 1; /* Set first LBA as used */
     } else if(volume.retVal == -1) {
         printf("\t- RESULT: file exists but can not open for write\n");
@@ -79,7 +82,7 @@ int main (int main_argc, char *main_argv[]) {
         if(strcmp(command.opt, "ld") == 0) {
             success = listDir(volume, command);
         } else if(strcmp(command.opt, "mkdir") == 0) {
-            success = createDir(volume, command);
+            // success = createDir(volume, command); /* opt newDirName parentDirName */
         } else if(strcmp(command.opt, "touch") == 0) {
             success = createFile(volume, command);
         } else if(strcmp(command.opt, "rm") == 0) {
