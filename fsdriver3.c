@@ -137,7 +137,7 @@ int main (int main_argc, char *main_argv[]) {
     } while(strcmp(command.opt, "exit") != 0);
 
     /* Close Partition */
-    printf("Closing Partition\n");
+    printf("\nClosing Partition\n");
     closePartitionSystem();
     printf("Closed  Partition\n");
     return EXIT_SUCCESS;

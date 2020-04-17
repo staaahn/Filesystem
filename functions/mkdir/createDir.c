@@ -11,8 +11,8 @@ int createDir(struct filesystem_volume volume, struct arguments command) {
     /* Get args */
     char* name     = command.args[1];
     char* parent   = command.args[2];
-    printf("- NewFolder: %s\n", name);
-    printf("- In Folder: %s\n", parent);
+    printf("* NewFolder: %s\n", name);
+    printf("* In Folder: %s\n", parent);
 
     /* Find the first LBA that is empty */
     printf("- Looking for Index LBA\n");
@@ -71,6 +71,6 @@ int createDir(struct filesystem_volume volume, struct arguments command) {
     printf("- Updating parent folder\n");
     if(addChild(i, parentIndex, volume) != 1) return 0;
 
-    printf("- COMPLETE\n");
+    printf("***COMPLETE***\n\n");
     return 1;
 }
