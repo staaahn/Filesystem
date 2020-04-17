@@ -21,10 +21,7 @@ void createRoot(struct filesystem_volume volume) {
     for(int i = 0; i < volume.blockSize; i++) {
         buffer[i] = '-';
     }
-    buffer[0] = 'r';
-    buffer[1] = 'o';
-    buffer[2] = 'o';
-    buffer[3] = 't';
+    addName("root", buffer);
     uint64_t result = LBAwrite( buffer, 1, 0);
 }
 
