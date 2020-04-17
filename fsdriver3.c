@@ -16,6 +16,18 @@
 #include "./functions/set/setMetaData.h" /* (setMetaData) */
 #include "./functions/touch/createFile.h" /* (createFile) */
 
+void createRoot(struct filesystem_volume volume) {
+    char* buffer = malloc(volume.blockSize);
+    for(int i = 0; i < volume.blockSize; i++) {
+        buffer[i] = '-';
+    }
+    buffer[0] = 'r';
+    buffer[1] = 'o';
+    buffer[2] = 'o';
+    buffer[3] = 't';
+    uint64_t result = LBAwrite( buffer, 1, 0);
+}
+
 int main (int main_argc, char *main_argv[]) {
     struct filesystem_volume volume;
 
@@ -42,6 +54,8 @@ int main (int main_argc, char *main_argv[]) {
 	printf("Opened  %s, Volume Size: %llu;  BlockSize: %llu; Return %d\n", volume.filename, (ull_t)volume.volumeSize, (ull_t)volume.blockSize, volume.retVal);
     if(volume.retVal == 0) {
         printf("\t- RESULT: success\n");
+        createRoot(volume); /* Set root directory */
+        volume.map[0] = 1; /* Set first LBA as used */
     } else if(volume.retVal == -1) {
         printf("\t- RESULT: file exists but can not open for write\n");
         // return EXIT_FAILURE;
