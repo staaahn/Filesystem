@@ -61,7 +61,7 @@ int main (int main_argc, char *main_argv[]) {
     printf("\nNOTE: type \"exit\" to exit this prompt\n");
     printf("NOTE: type \"help\" to show commands\n\n");
     do {
-        printf("$ "); // prompt
+        printf("Filesystem_Prompt$ "); // prompt
         fgets(line, LINE_LENGTH, stdin);
         tokenize(line, &command);
         if(command.argc == 0) continue; 
